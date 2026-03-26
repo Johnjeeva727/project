@@ -1,0 +1,18 @@
+import jakarta.persistence.Embeddable;
+
+@Embeddable
+public class Currency {
+    private String currencyCode;
+    private String currencySymbol;
+    private String locale;
+
+    public Currency() {}
+
+    public Currency(String currencyCode, String currencySymbol, String locale) {
+        this.currencyCode = currencyCode;
+        this.currencySymbol = currencySymbol;
+        this.locale = locale;
+    }
+
+    // getters and setters
+}
