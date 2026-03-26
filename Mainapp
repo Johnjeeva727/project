@@ -1,0 +1,47 @@
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import java.math.BigDecimal;
+
+public class MainApp {
+    public static void main(String[] args) {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+
+        // Create accounts
+        BankAccount account1 = new BankAccount();
+        account1.setAccountNumber("ACC001");
+        account1.setAccountHolderName("Alice Smith");
+        account1.setBalance(new BigDecimal("1500.00"));
+        account1.setCurrency(new Currency("USD", "$", "en-US"));
+
+        BankAccount account2 = new BankAccount();
+        account2.setAccountNumber("ACC002");
+        account2.setAccountHolderName("Bob Johnson");
+        account2.setBalance(new BigDecimal("2500.50"));
+        account2.setCurrency(new Currency("EUR", "€", "de-DE"));
+
+        session.persist(account1);
+        session.persist(account2);
+
+        tx.commit();
+
+        // Retrieve
+        session.beginTransaction();
+
+        BankAccount acc1 = session.get(BankAccount.class, "ACC001");
+        BankAccount acc2 = session.get(BankAccount.class, "ACC002");
+
+        System.out.println(acc1.getAccountHolderName() + ": " +
+                acc1.getCurrency().getCurrencySymbol() +
+                acc1.getBalance());
+
+        // Transfer money
+        acc1.setBalance(acc1.getBalance().add(new BigDecimal("500")));
+        acc2.setBalance(acc2.getBalance().subtract(new BigDecimal("500")));
+
+        session.getTransaction().commit();
+
+        session.close();
+    }
+}
