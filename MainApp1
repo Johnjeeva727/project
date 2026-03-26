@@ -1,0 +1,33 @@
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class MainApp {
+
+    public static void main(String[] args) {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+
+        // 1. Create and persist employee
+        Employee emp = new Employee();
+        emp.setName("John Doe");
+        emp.setEmail("john@example.com");
+        emp.setSalary(75000.0);
+        emp.setAddress(new Address("123 Main St", "New York", "NY", "10001", "USA"));
+
+        session.persist(emp);
+        tx.commit();
+
+        // 2. Retrieve employee
+        session.beginTransaction();
+
+        Employee retrievedEmp = session.get(Employee.class, emp.getId());
+        System.out.println("Retrieved: " + retrievedEmp.getName());
+
+        // 3. Display address
+        System.out.println("City: " + retrievedEmp.getAddress().getCity());
+
+        session.getTransaction().commit();
+        session.close();
+    }
+}
