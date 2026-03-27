@@ -1,0 +1,22 @@
+public void createSampleProducts() {
+
+    // Book
+    Book book = new Book();
+    book.setName("Java Programming");
+    book.setPrice(new BigDecimal("29.99"));
+    book.setAuthor("John Doe");
+    book.setIsbn("123-456789");
+    book.setNumberOfPages(500);
+
+    // Electronics
+    Electronics laptop = new Electronics();
+    laptop.setName("Gaming Laptop");
+    laptop.setPrice(new BigDecimal("999.99"));
+    laptop.setBrand("Dell");
+    laptop.setWarrantyPeriod(24);
+    laptop.setPowerConsumption(150.0);
+
+    // Save
+    session.save(book);
+    session.save(laptop);
+}
