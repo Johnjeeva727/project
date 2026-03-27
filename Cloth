@@ -1,0 +1,12 @@
+Clothing cloth = new Clothing();
+
+cloth.setName("T-Shirt");
+cloth.setPrice(new BigDecimal("19.99"));
+cloth.setDescription("Comfortable cotton t-shirt");
+
+cloth.setSize("M");
+cloth.setColor("Black");
+cloth.setMaterial("Cotton");
+
+// save to database
+session.save(cloth);
