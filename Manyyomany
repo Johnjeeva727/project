@@ -1,0 +1,74 @@
+@Entity
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private String email;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "student_book",
+        joinColumns = @JoinColumn(name = "student_id"),
+        inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> books = new HashSet<>();
+
+    // getters and setters
+}
+
+
+
+
+
+@Entity
+public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+    private String author;
+
+    @ManyToMany(mappedBy = "books")
+    private Set<Student> students = new HashSet<>();
+
+    // getters and setters
+}
+
+
+public void borrowBook(Long studentId, Long bookId) {
+
+    Student student = session.get(Student.class, studentId);
+    Book book = session.get(Book.class, bookId);
+
+    student.getBooks().add(book);
+
+    session.save(student);
+}
+
+
+
+
+public void returnBook(Long studentId, Long bookId) {
+
+    Student student = session.get(Student.class, studentId);
+    Book book = session.get(Book.class, bookId);
+
+    student.getBooks().remove(book);
+
+    session.save(student);
+}
+
+
+
+
+public List<Book> getBooksByStudent(Long studentId) {
+
+    Student student = session.get(Student.class, studentId);
+
+    return new ArrayList<>(student.getBooks());
+}
